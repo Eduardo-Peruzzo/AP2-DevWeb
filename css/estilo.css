@@ -1,0 +1,79 @@
+#principal {
+    height: 100vh;
+}
+
+.pagina-login {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+
+    @media screen and (min-width: 768px) {
+        flex-direction: row;
+    }
+}
+
+.pagina-principal {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 70%;
+    align-items: center;
+    margin: auto;
+    background-color: black;
+    color: white;
+}
+
+.pagina-principal button {
+    max-height: 2em;
+    min-width: 3em;
+    background-color: white;
+    color: black;
+    font-size: 22px;
+}
+
+.area-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 30em;
+    text-align: center;
+}
+
+.area-info p {
+    margin: 0;
+}
+
+.area-info h1 {
+    margin: 0;
+    margin-bottom: 0.5em;
+    text-decoration: underline;
+}
+
+.area-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 30em;
+    text-align: center;
+}
+
+.area-input div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.area-input button {
+    background-color: black;
+    color: white;
+}
+
+.area-input p {
+    margin: 0;
+    margin-top: 0.5em;
+}
