@@ -14,23 +14,37 @@
     }
 }
 
-.pagina-principal {
+.pagina-login button {
+    cursor: pointer;
+}
+
+.header-principal {
     display: flex;
-    width: 100%;
-    justify-content: center;
-    gap: 70%;
+    justify-content: space-between;
+    padding: 0.5em 1em;
     align-items: center;
     margin: auto;
     background-color: black;
     color: white;
 }
 
-.pagina-principal button {
-    max-height: 2em;
-    min-width: 3em;
+.header-principal h1 {
+    margin: 0;
+}
+
+.header-principal button {
+    padding: 0.3em 0.7em;
+    font-size: 18px;
+    font-weight: bold;
     background-color: white;
     color: black;
-    font-size: 22px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+        background-color: rgb(194, 194, 194);
+    }
 }
 
 .area-info {
@@ -76,4 +90,108 @@
 .area-input p {
     margin: 0;
     margin-top: 0.5em;
+}
+
+.elenco-botoes {
+    display: none;
+    max-width: 80%;
+    width: 40em;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 2em auto;
+
+    @media screen and (min-width: 768px) {
+        display: flex;
+    }
+}
+
+.elenco-botoes button {
+    font-size: 24px;
+    font-weight: bold;
+    height: 2.7em;
+    width: 6em;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+select {
+    font-size: 24px;
+    font-weight: bold;
+    height: 2.7em;
+    width: 10em;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 2em auto;
+    display: block;
+
+    @media screen and (min-width: 768px) {
+        display: none;
+    }
+}
+
+.busca-nome {
+    margin: auto;
+    margin-bottom: 2em;
+    font-size: 24px;
+    display: block;
+}
+
+.div-atletas {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 768px) {
+    .div-atletas {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+
+@media screen and (min-width: 1024px) {
+    .div-atletas {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+
+@media screen and (min-width: 1300px) {
+    .div-atletas {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+.cartao {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    border: 3px solid white;
+    background-color: black;
+    color: white;
+    border-radius: 15px;
+    width: 13.5em;
+    height: 25em;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.cartao h3 {
+    min-height: 3em;
+}
+
+.cartao img {
+    max-width: 95%;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+    object-position: 100% 10%;
+}
+
+a {
+    background-color: white;
 }

@@ -1,6 +1,12 @@
 const div = document.getElementById("principal")
 let login = ""
 
+const pega_json = async (caminho) => {
+    const resposta = await fetch(caminho);
+    const dados = await resposta.json();
+    return dados;
+}
+
 const paginaLogin = () => {
     div.innerHTML = ""
 
@@ -20,7 +26,7 @@ const paginaLogin = () => {
 
     titulo.innerHTML = "Atletas do Botafogo em 2024.1"
     textInicio.innerHTML = "Site criado para exibir os atletas do botafogo, como pedido da AP2 de Desenvolvimento Web;"
-    areaInfo.appendChild(titulo) 
+    areaInfo.appendChild(titulo)
     areaInfo.appendChild(textInicio)
 
     input.placeholder = "Insira a senha"
@@ -36,8 +42,9 @@ const paginaLogin = () => {
         if (hex_sha256(login) === "ce855f48b7422de36b50512a9a0a06a59d4f2f6efac6f439456777a396773cc1") {
             sessionStorage.setItem("login", "logado")
             paginaPrincipal()
+        } else {
+            alert("Senha incorreta!")
         }
-        console.log(login)
     }
 
     container.appendChild(areaInfo)
@@ -48,29 +55,93 @@ const paginaLogin = () => {
 const paginaPrincipal = () => {
     div.innerHTML = ""
 
-    const containerLogout = document.createElement("div")
-    containerLogout.classList.add("pagina-principal")
+    const headerPrincipal = document.createElement("header")
+    headerPrincipal.classList.add("header-principal")
     const titulo = document.createElement("h1")
     const logout = document.createElement("button")
 
-
     titulo.innerHTML = "Atletas Botafogo 2024.1"
     logout.innerHTML = "Sair"
-    containerLogout.appendChild(titulo)
-    containerLogout.appendChild(logout)
-
-
+    headerPrincipal.appendChild(titulo)
+    headerPrincipal.appendChild(logout)
 
     logout.onclick = () => {
         sessionStorage.removeItem("login")
         paginaLogin()
     }
 
-    div.appendChild(containerLogout)
+    const divElenco = document.createElement("div")
+    divElenco.classList.add("elenco-botoes")
+    const masculino = document.createElement("button")
+    const feminino = document.createElement("button")
+    const elencoCompleto = document.createElement("button")
+    const buscaNome = document.createElement("input")
+    buscaNome.classList.add("busca-nome")
+    const select = document.createElement("select")
+    const divAtletas = document.createElement("div")
+    divAtletas.classList.add("div-atletas")
+
+    masculino.innerHTML = "Masculino"
+    feminino.innerHTML = "Feminino"
+    elencoCompleto.innerHTML = "Elenco Completo"
+    buscaNome.placeholder = "Busque pelo nome"
+    select.innerHTML = `
+        <option disabled selected>Escolha o elenco</option>
+        <option value="masculino">Masculino</option>
+        <option value="feminino">Feminino</option>
+        <option value="all">Elenco Completo</option>
+    `
+
+    masculino.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/masculino")
+    feminino.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/feminino")
+    elencoCompleto.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/all")
+    select.onchange = () => console.log(select.value)
+
+    divElenco.appendChild(masculino)
+    divElenco.appendChild(feminino)
+    divElenco.appendChild(elencoCompleto)
+
+    div.appendChild(headerPrincipal)
+    div.appendChild(divElenco)
+    div.appendChild(select)
+    div.appendChild(buscaNome)
+    div.appendChild(divAtletas)
 }
 
 if (sessionStorage.getItem("login")) {
     paginaPrincipal()
 } else {
     paginaLogin()
+}
+
+const exibirAtletas = (caminho) => {
+    const container = document.querySelector(".div-atletas")
+    container.innerHTML = ""
+    pega_json(caminho).then(
+        (retorno) => {
+            retorno.forEach((atleta) => montaCard(atleta))
+        }
+    )
+}
+
+const montaCard = (atleta) => {
+    const container = document.querySelector(".div-atletas")
+
+    const cartao = document.createElement("div");
+    cartao.classList.add("cartao")
+    const nome = document.createElement("h3");
+    const imagem = document.createElement("img");
+    const link = document.createElement("a");
+
+    nome.innerHTML = atleta.nome;
+    cartao.appendChild(nome);
+
+    imagem.src = atleta.imagem;
+    cartao.appendChild(imagem);
+
+    link.innerHTML = "SAIBA MAIS"
+    link.href = `detalhes.html?id=${atleta.id}`
+    cartao.appendChild(link)
+
+    container.appendChild(cartao)
 }
