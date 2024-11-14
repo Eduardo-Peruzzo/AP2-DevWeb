@@ -139,11 +139,18 @@ select {
     margin-bottom: 2em;
     font-size: 24px;
     display: block;
+    border: 1px solid black;
+    padding: 0.5em 1em;
 }
 
 .div-atletas {
     display: grid;
     grid-template-columns: 1fr;
+    gap: 1em;
+    justify-items: center;
+    align-items: center;
+    max-width: 1400px;
+    margin: auto;
 }
 
 @media screen and (min-width: 768px) {
@@ -171,7 +178,7 @@ select {
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    border: 3px solid white;
+    border: 3px solid black;
     background-color: black;
     color: white;
     border-radius: 15px;
@@ -179,19 +186,34 @@ select {
     height: 25em;
     text-align: center;
     padding: 0 10px;
+    overflow: hidden;
+    position: relative;
 }
 
 .cartao h3 {
     min-height: 3em;
+    display: flex;
+    align-items: center;
 }
 
 .cartao img {
-    max-width: 95%;
-    overflow-clip-margin: content-box;
-    overflow: clip;
-    object-position: 100% 10%;
+    width: 21.5em;
+    position: relative;
+    right: 3.2em;
 }
 
 a {
     background-color: white;
+    color: black;
+    z-index: 1;
+    position: absolute;
+    width: 15em;
+    height: 2.7em;
+    top: 15.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
 }

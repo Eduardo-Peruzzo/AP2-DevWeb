@@ -81,6 +81,9 @@ const paginaPrincipal = () => {
     const divAtletas = document.createElement("div")
     divAtletas.classList.add("div-atletas")
 
+    let elencoAtual
+    let atletas
+
     masculino.innerHTML = "Masculino"
     feminino.innerHTML = "Feminino"
     elencoCompleto.innerHTML = "Elenco Completo"
@@ -92,10 +95,17 @@ const paginaPrincipal = () => {
         <option value="all">Elenco Completo</option>
     `
 
-    masculino.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/masculino")
-    feminino.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/feminino")
-    elencoCompleto.onclick = () => exibirAtletas("https://botafogo-atletas.mange.li/2024-1/all")
-    select.onchange = () => console.log(select.value)
+    masculino.onclick = () => {
+        pega_json("https://botafogo-atletas.mange.li/2024-1/masculino").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+    }
+    feminino.onclick = () => {
+        pega_json("https://botafogo-atletas.mange.li/2024-1/feminino").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+    }
+    elencoCompleto.onclick = () => {
+        pega_json("https://botafogo-atletas.mange.li/2024-1/all").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+    }
+    select.onchange = () => pega_json(`https://botafogo-atletas.mange.li/2024-1/${select.value}`).then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+    buscaNome.oninput = () => exibirAtletas(atletas, buscaNome.value)
 
     divElenco.appendChild(masculino)
     divElenco.appendChild(feminino)
@@ -114,14 +124,15 @@ if (sessionStorage.getItem("login")) {
     paginaLogin()
 }
 
-const exibirAtletas = (caminho) => {
+const exibirAtletas = (atletas, entrada = "") => {
     const container = document.querySelector(".div-atletas")
     container.innerHTML = ""
-    pega_json(caminho).then(
-        (retorno) => {
-            retorno.forEach((atleta) => montaCard(atleta))
+    atletas.forEach((atleta) => {
+        if (entrada == "") { montaCard(atleta) }
+        if (entrada != "") {
+            if (atleta.nome.toLowerCase().includes(entrada.toLowerCase())) { montaCard(atleta) }
         }
-    )
+    })
 }
 
 const montaCard = (atleta) => {
@@ -144,4 +155,8 @@ const montaCard = (atleta) => {
     cartao.appendChild(link)
 
     container.appendChild(cartao)
+}
+
+const filtraAtletas = (entrada, caminho) => {
+    exibirAtletas()
 }
