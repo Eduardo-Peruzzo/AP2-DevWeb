@@ -1,7 +1,15 @@
 const div = document.getElementById("principal")
 let login = ""
 
+const carregando = document.createElement("h2")
+carregando.classList.add("carregando")
+carregando.innerHTML = "Carregando..."
+
 const pega_json = async (caminho) => {
+    const container = document.querySelector(".div-atletas")
+    container.innerHTML = ""
+    div.appendChild(carregando)
+
     const resposta = await fetch(caminho);
     const dados = await resposta.json();
     return dados;
@@ -81,7 +89,6 @@ const paginaPrincipal = () => {
     const divAtletas = document.createElement("div")
     divAtletas.classList.add("div-atletas")
 
-    let elencoAtual
     let atletas
 
     masculino.innerHTML = "Masculino"
@@ -96,15 +103,15 @@ const paginaPrincipal = () => {
     `
 
     masculino.onclick = () => {
-        pega_json("https://botafogo-atletas.mange.li/2024-1/masculino").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+        pega_json("https://botafogo-atletas.mange.li/2024-1/masculino").then((retorno) => { atletas = retorno; div.removeChild(carregando); exibirAtletas(atletas) })
     }
     feminino.onclick = () => {
-        pega_json("https://botafogo-atletas.mange.li/2024-1/feminino").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+        pega_json("https://botafogo-atletas.mange.li/2024-1/feminino").then((retorno) => { atletas = retorno; div.removeChild(carregando); exibirAtletas(atletas) })
     }
     elencoCompleto.onclick = () => {
-        pega_json("https://botafogo-atletas.mange.li/2024-1/all").then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+        pega_json("https://botafogo-atletas.mange.li/2024-1/all").then((retorno) => { atletas = retorno; div.removeChild(carregando); exibirAtletas(atletas) })
     }
-    select.onchange = () => pega_json(`https://botafogo-atletas.mange.li/2024-1/${select.value}`).then((retorno) => {atletas = retorno; exibirAtletas(atletas)})
+    select.onchange = () => pega_json(`https://botafogo-atletas.mange.li/2024-1/${select.value}`).then((retorno) => { atletas = retorno; div.removeChild(carregando); exibirAtletas(atletas) })
     buscaNome.oninput = () => exibirAtletas(atletas, buscaNome.value)
 
     divElenco.appendChild(masculino)
@@ -118,15 +125,10 @@ const paginaPrincipal = () => {
     div.appendChild(divAtletas)
 }
 
-if (sessionStorage.getItem("login")) {
-    paginaPrincipal()
-} else {
-    paginaLogin()
-}
-
 const exibirAtletas = (atletas, entrada = "") => {
     const container = document.querySelector(".div-atletas")
     container.innerHTML = ""
+
     atletas.forEach((atleta) => {
         if (entrada == "") { montaCard(atleta) }
         if (entrada != "") {
@@ -151,12 +153,23 @@ const montaCard = (atleta) => {
     cartao.appendChild(imagem);
 
     link.innerHTML = "SAIBA MAIS"
-    link.href = `detalhes.html?id=${atleta.id}`
+    // link.href = `detalhes.html?id=${atleta.id}`
     cartao.appendChild(link)
 
+    cartao.dataset.id = atleta.id
+
+    cartao.onclick = manipulaClick
     container.appendChild(cartao)
 }
 
-const filtraAtletas = (entrada, caminho) => {
-    exibirAtletas()
+const manipulaClick = (evento) => {
+    const id = evento.currentTarget.dataset.id
+
+    window.location = `detalhes.html?id=${id}`
+}
+
+if (sessionStorage.getItem("login")) {
+    paginaPrincipal()
+} else {
+    paginaLogin()
 }
